@@ -1,7 +1,13 @@
 package com.bridgelabz.addressBook.dto;
 
+import javax.validation.constraints.Pattern;
+
 public class AddressBookDTO {
+	
+	@Pattern(regexp = "^[A-Z]{1}[a-zA-Z\\s]{2,}$", message = "Employee name Invalid")
 	public String fullName;
+	
+	@Pattern(regexp = "^[a-zA-Z\\s]{10,}$", message = "Address Invalid")
 	public String address;
 
 	public AddressBookDTO(String fullName, String address) {
@@ -11,6 +17,6 @@ public class AddressBookDTO {
 
 	@Override
 	public String toString() {
-		return "AddressBookDTO [fullName=" + fullName + ", address=" + address + "]";
+		return "fullName=" + fullName + ", address=" + address;
 	}
 }
