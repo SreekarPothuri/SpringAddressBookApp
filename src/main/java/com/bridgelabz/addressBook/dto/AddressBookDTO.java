@@ -13,8 +13,8 @@ public @ToString class AddressBookDTO {
 	@Pattern(regexp = "^([A-Za-z0-9()/,-.]{3,}[ ]?)+$", message = "Address Invalid")
 	public String address;
 	
-	@Pattern(regexp = "^91{2}[ ]{1}[789]{9}$", message = "Phone Number Invalid")
-	public long phoneNumber;
+	@Pattern(regexp = "^(?:(?:\\+|0{0,2})91(\\s*[\\-]\\s*)?|[0]?)?[789]\\d{9}$", message = "Phone Number Invalid")
+	public String phoneNumber;
 	
 	@NotNull(message = "City should not be Empty")
 	public String City;
