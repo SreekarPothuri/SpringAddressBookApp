@@ -20,35 +20,31 @@ public class AddressBookService implements IAddressBookService{
 	@Autowired
 	private AddressbookRepository addressBookRepository;
 	
-	private List<AddressBookData> contactDataList = new ArrayList<>();
 	public List<AddressBookData> getAddressBookData() {
-		return contactDataList;
+		return addressBookRepository.findAll();
 	}
 
 	public AddressBookData getAddressBookDataById(int bookId) {
-		return contactDataList.stream()
-				.filter(bookData -> bookData.getAddressBookId() == bookId)
-				.findFirst()
-				.orElseThrow(() -> new AddressBookException("Contact Not Found"));
+		return addressBookRepository
+				.findById(bookId)
+				.orElseThrow(() -> new AddressBookException("Contact with bookId " + bookId + " does not exists!!"));
 	}
 
 	public AddressBookData createAddressBookData(AddressBookDTO addressBookDTO) {
 		AddressBookData contactData = null;
 		contactData = new AddressBookData(addressBookDTO);
-		contactDataList.add(contactData);
 		log.debug("Contact Data: "+contactData.toString());
 		return addressBookRepository.save(contactData);
 	}
 
 	public AddressBookData updateAddressBookData(int bookId, AddressBookDTO addressBookDTO) {
 		AddressBookData contactData = this.getAddressBookDataById(bookId);
-		contactData.setFullName(addressBookDTO.fullName);
-		contactData.setAddress(addressBookDTO.address);
-		contactDataList.set(bookId-1, contactData);
-		return contactData;
+		contactData.updateAddressBookData(addressBookDTO);
+		return addressBookRepository.save(contactData);
 	}
 
 	public void deleteAddressBookData(int bookId) {
-		contactDataList.remove(bookId-1);
+		AddressBookData contactData = this.getAddressBookDataById(bookId);
+		addressBookRepository.delete(contactData);
 	}
 }
